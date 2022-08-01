@@ -1,0 +1,26 @@
+class Solution {
+
+    /**
+     * @param Integer $x
+     * @return Boolean
+     */
+    function isPalindrome($x) {
+      
+        $arr = str_split($x);
+        
+        $length = count($arr);
+        
+        $j    = $length-1;
+        
+        $half = floor($length/2);
+        
+        for($i=0;$i<=$half;$i++)
+        {
+          if($arr[$i]!=$arr[$j])
+              return false;
+            
+            $j--;    
+        }
+        return true;
+    }
+}
