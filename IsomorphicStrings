@@ -1,0 +1,37 @@
+class Solution {
+
+    /**
+     * @param String $s
+     * @param String $t
+     * @return Boolean
+     */
+    function isIsomorphic($s, $t) {
+        
+        $s_arr = str_split($s);
+        $t_arr = str_split($t);
+        
+        $map = array();
+        $used = array();
+        
+        $length = count($s_arr);
+        
+        for($i=0; $i<$length; $i++)
+        {
+            if(!isset($map[$s_arr[$i]]))
+            {
+                if(isset($used[$t_arr[$i]]))
+                    return false;
+                else
+                {
+                  $map[$s_arr[$i]]  = $t_arr[$i];
+                  $used[$t_arr[$i]] = 1 ;  
+                }
+            }
+            else if($map[$s_arr[$i]] !=$t_arr[$i])
+                return false;
+        }
+        return true;
+        
+
+    }
+}
