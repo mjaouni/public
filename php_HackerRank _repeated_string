@@ -1,0 +1,22 @@
+<?php
+function repeatedString($s, $n) {
+    // Write your code here
+    $str_length = strlen($s);
+    $a_count_in_s = substr_count($s,"a");
+    if($n == $str_length)
+        return $a_count_in_s;
+    elseif($n > $str_length)
+    {
+        $divisor = floor($n/$str_length);
+        $count = $a_count_in_s * $divisor;
+        
+        $remainder = $n % $str_length;
+        if($remainder!=0)
+          $count+= substr_count(substr($s,0,$remainder),"a");
+    }
+    else
+     return substr_count(substr($s,0,$n),"a");
+    
+    return $count;
+}
+?>
