@@ -13,10 +13,10 @@ function repeatedString($s, $n) {
         $remainder = $n % $str_length;
         if($remainder!=0)
           $count+= substr_count(substr($s,0,$remainder),"a");
+       
+       return $count;      
     }
     else
      return substr_count(substr($s,0,$n),"a");
-    
-    return $count;
 }
 ?>
