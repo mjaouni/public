@@ -1,5 +1,11 @@
 <?php
-function isValid($s) {
+class Solution {
+
+    /**
+     * @param String $s
+     * @return Boolean
+     */
+    function isValid($s) {
         $Chars = str_split($s);
         $bracketAndOpp = array();
         $bracketAndOpp['('] = ')';
@@ -19,4 +25,5 @@ function isValid($s) {
         return empty($stack);
         
     }
-    ?>
+}
+?>
