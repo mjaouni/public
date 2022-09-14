@@ -1,0 +1,22 @@
+<?php
+function isValid($s) {
+        $Chars = str_split($s);
+        $bracketAndOpp = array();
+        $bracketAndOpp['('] = ')';
+        $bracketAndOpp['{'] = '}';
+        $bracketAndOpp['['] = ']';
+
+        $stack = array();
+        
+        foreach($Chars as $char)
+        {    
+            if( isset($bracketAndOpp[$char]) )
+                array_push($stack,$bracketAndOpp[$char]);
+            
+            elseif(array_pop($stack)!=$char)
+                return false;
+        }
+        return empty($stack);
+        
+    }
+    ?>
