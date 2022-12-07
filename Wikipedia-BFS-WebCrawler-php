@@ -1,0 +1,122 @@
+<?php
+require 'vendor/autoload.php';
+
+use Symfony\Component\DomCrawler\Crawler;
+
+$httpClient = new \Goutte\Client();
+
+ini_set('max_execution_time', '7000');
+ini_set('memory_limit', '3G');
+
+//________________________________________________Link Class____________________________________________________//
+class Link {
+    private $link;
+    private $parent;
+
+    public function __construct($link,$parent)
+    {
+        $this->link = $link;
+        $this->parent = $parent;
+    }
+    public function setLink($link): void 
+    {
+        $this->link = $link;     
+    }
+    public function getLink(): string 
+    {
+        return $this->link;     
+    }
+
+    public function setParent($parent): void 
+    {
+        $this->parent = $parent;     
+    }
+    public function getParent()
+    {
+        return $this->parent;     
+    }
+}
+//________________________________________________END Link Class____________________________________________________//
+$visited = [];
+
+$source      ="Object-oriented_programming";
+$destination ="Adolf_Hitler";
+
+$main_link = 'https://en.wikipedia.org/wiki/'.$source;
+
+$main_node = new Link($main_link,null);
+
+$queue = new SplQueue();
+$queue->enqueue($main_node);
+
+$visited[] = $main_link;
+
+crawl($httpClient,$queue,$visited,$destination);
+
+echo '<pre>',print_r($visited),'</pre>';
+
+ /*
+ * A simple iterative Breadth-First Search implementation.
+ * http://en.wikipedia.org/wiki/Breadth-first_search
+ *
+ * 1. Start with a node, enqueue it and mark it visited.
+ * 2. Do this while there are nodes on the queue:
+ *     a. dequeue next node.
+ *     b. search neighbours,if we find what we want,print path and return true! 
+ *     c. else if they haven't been visited,
+ *        add them to the queue and mark them visited.
+ *  3. If we haven't found our node, return false.
+ *
+ * @returns bool
+ */
+function crawl($httpClient,&$queue,&$visited,$destination)
+{
+    while ($queue->count() > 0) {
+
+       $link_obj     = $queue->dequeue();
+            
+       $link_str     = $link_obj->getLink();
+
+       $parent = $link_obj;
+
+       $response = $httpClient->request('GET', $link_str);
+
+       $nodes = $response->filter('a');
+       
+       foreach($nodes as $node)
+        {    
+            $dom = new Crawler($node);
+            $href = $dom->extract(array('href'))[0];
+
+            if( (strpos($href,'/wiki/',0) === 0) 
+            && (strpos($href,':',0)===false) 
+            && (strpos($href,'#',0)===false)
+            && (strpos($href,'/wiki/Main_Page',0)===false))
+            {  
+              if($href == '/wiki/'.$destination){ 
+       
+                $path = "";
+                //print from parent to main link + print destination
+                while($parent!=null)
+                {
+                      $path = $parent->getLink()." ==> ".$path;
+                      $parent = $parent->getParent();
+                }
+                echo $path.$href;
+
+                return true;
+              }
+              else if(!in_array($href, $visited)) {
+
+                  $visited[] = $href;
+                  $link_node = new Link($href,$parent);
+                  $queue->enqueue($link_node);
+              }
+            }    
+        }//END ForeEach
+    }//END While
+
+    // //===>If we reach this place it means we searched all wikiPedia Links to find a path 
+    // //    between the source and the destination but it didn't find (this may takes monthes running code :) )
+    return false;  
+}
