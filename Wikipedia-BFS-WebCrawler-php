@@ -40,7 +40,7 @@ class Link {
 $visited = [];
 
 $source      ="Object-oriented_programming";
-$destination ="Adolf_Hitler";
+$destination ="Vienna";
 
 $main_link = 'https://en.wikipedia.org/wiki/'.$source;
 
