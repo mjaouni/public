@@ -79,7 +79,12 @@ function crawl($httpClient,&$queue,&$visited,$destination)
 
        $parent = $link_obj;
 
-       $response = $httpClient->request('GET', $link_str);
+       try {
+           $response = $httpClient->request('GET', $link_str);
+       } catch (Exception $e) {
+           echo 'Error: ', $e->getMessage(), "\n";
+           continue;
+       }
 
        $nodes = $response->filter('a');
        
