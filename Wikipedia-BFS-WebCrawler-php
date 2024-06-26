@@ -122,6 +122,6 @@ function crawl($httpClient,&$queue,&$visited,$destination)
     }//END While
 
     // //===>If we reach this place it means we searched all wikiPedia Links to find a path 
-    // //    between the source and the destination but it didn't find (this may takes monthes running code :) )
+    // //    between the source and the destination but it didn't find (this may takes months running code :) )
     return false;  
 }
